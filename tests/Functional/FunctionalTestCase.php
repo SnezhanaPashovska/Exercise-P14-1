@@ -57,7 +57,6 @@ abstract class FunctionalTestCase extends WebTestCase
             ->getRepository(User::class)
             ->findOneByEmail($email);
 
-        // Ensure user implements UserInterface
         if ($user instanceof UserInterface) {
             $this->client->loginUser($user);
         } else {

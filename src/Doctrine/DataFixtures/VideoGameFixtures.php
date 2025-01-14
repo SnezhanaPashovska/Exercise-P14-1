@@ -19,8 +19,7 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
         private readonly Generator $faker,
         private readonly CalculateAverageRating $calculateAverageRating,
         private readonly CountRatingsPerValue $countRatingsPerValue,
-    ) {
-    }
+    ) {}
 
     public function load(ObjectManager $manager): void
     {
@@ -30,9 +29,8 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
         /** @var string $fakeText */
         $fakeText = $this->faker->paragraphs(5, true);
 
-        // Use array_map instead of array_fill_callback
         $videoGames = array_map(
-            fn (int $index): VideoGame => (new VideoGame())
+            fn(int $index): VideoGame => (new VideoGame())
                 ->setTitle(sprintf('Jeu vidéo %d', $index))
                 ->setDescription($fakeText)
                 ->setReleaseDate((new \DateTimeImmutable())->sub(new \DateInterval(sprintf('P%dD', $index))))
@@ -40,21 +38,19 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
                 ->setRating(($index % 5) + 1)
                 ->setImageName(sprintf('video_game_%d.png', $index))
                 ->setImageSize(2_098_872),
-            range(0, 49) // Create an array of 50 values
+            range(0, 49)
         );
 
-        // Attach tags to video games
         array_walk($videoGames, static function (VideoGame $videoGame, int $index) use ($tags) {
             for ($tagIndex = 0; $tagIndex < 5; ++$tagIndex) {
                 $videoGame->getTags()->add($tags[($index + $tagIndex) % count($tags)]);
             }
         });
 
-        // Persist video games
+
         array_walk($videoGames, [$manager, 'persist']);
         $manager->flush();
 
-        // Adding reviews for the video games
         array_walk($videoGames, function (VideoGame $videoGame, int $index) use ($users, $manager) {
             $filteredUsers = $users[$index % 5];
 

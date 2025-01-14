@@ -49,7 +49,6 @@ final class VideoGameRepository extends ServiceEntityRepository
         }
 
         if ([] !== $filter->getTags()) {
-            // Utilisez une sous-requête pour filtrer les jeux ayant tous les tags requis
             $subQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('vg2.id')
                 ->from(VideoGame::class, 'vg2')

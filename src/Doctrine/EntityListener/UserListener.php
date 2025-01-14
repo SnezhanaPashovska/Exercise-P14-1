@@ -17,7 +17,6 @@ final readonly class UserListener
     {
         $plainPassword = $user->getPlainPassword();
 
-        // Check if the plain password is not null
         if (null !== $plainPassword) {
             $user->setPassword(
                 $this->passwordHasher->hashPassword(

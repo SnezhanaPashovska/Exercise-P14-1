@@ -22,12 +22,10 @@ final class PaginationValueResolver implements ValueResolverInterface
     {
         $argumentType = $argument->getType();
 
-        // Ensure we're resolving the Pagination type
         if (Pagination::class !== $argumentType) {
             return [];
         }
 
-        // Create Pagination instance using parameters from the request
         return [
             new Pagination(
                 $request->query->getInt('page', 1),
